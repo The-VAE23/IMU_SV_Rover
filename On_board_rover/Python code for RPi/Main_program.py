@@ -19,6 +19,8 @@ T_data_avail = False                                            # Boolean value 
 dist = 0.0; dist_req = 0.0; hdg = 0.0; pitch = 0.0; roll=0.0    # Variables to pull data from IMU
 treshold_dist = 0.1                                             # Treshold distance to stop execution
 t=0.0                                                           # Float to count time
+prevCMDs=[]                                                     # Variable to store last sent cmd to driving board
+pcount = 0
 
 # Vector Variables for Navigation
 current_vec = np.array([[0],[0]])                               # Vector to acquire data from IMU
@@ -106,7 +108,9 @@ while True:
             if status and DR != 0:                                                      # If object detected turn towards given direction
                 st_angle = DR*23
             elif status and DR == 0:                                                    # If direction cannot be found, ask for help (No shame rover, you tried!)
-                giveDriveCMD(0,0,0,AR_1)
+                CMDs = giveDriveCMD(0,0,0)
+                for x in CMDs:
+                    writeSerial(AR_1,x)
                 writeSerial(AR_2,"Failed to CV resolve")
                 writeSerial(AR_2,"Mode Manual, Sending Img")
                 imgL = cap1.read()[1]
@@ -116,18 +120,30 @@ while True:
             else:
                 st_angle = angle - hdg                                                  # Convert angle from vector into steering angle
             if pitch > 30 or roll > 30 or pitch < -30 or roll < -30:
-                giveDriveCMD(0,0,0,AR_1)                                                # Stop the bot if it is dangerously tipping
+                CMDs = giveDriveCMD(0,0,0)                                              # Stop the bot if it is dangerously tipping
+                for x in CMDs:
+                    writeSerial(AR_1,x)
             else:
-                giveDriveCMD(dist_req,st_angle,6,AR_1)                                  # Send data to CMD Handler if required distance > treshold
+                CMDs = giveDriveCMD(dist_req,st_angle,6)                                # Send data to CMD Handler if required distance > treshold
+                if prevCMDs != CMDs:
+                    for x in CMDs:
+                        writeSerial(AR_1,x)
+                    prevCMDs = CMDs
         elif T_data_avail and (dist_req <= treshold_dist) :
-            giveDriveCMD(0,0,0,AR_1)                                                    # Tell CMD Handler to stop if distance < treshold
+            CMDs = giveDriveCMD(0,0,0,AR_1)                                             # Tell CMD Handler to stop if distance < treshold
+            for x in CMDs:
+                    writeSerial(AR_1,x)
             writeSerial(AR_2,3)                                                         # Send Sensor data via RF to remote
             img = Imcap(cam_port=cap1,size=(240,320))                                   # Get img from camera, size used for demonstration purposes
             img = cv.cvtColor(img,cv.COLOR_BGR2GRAY)                                    # Convert img to BW
             sendIMGdata(img,AR_2)                                                       # Send Image data via RF to remote
             T_data_avail = False                                                        # Set status to target data required
         else:
-            print("Waiting for target data")
+            if(pcount==0):
+                print("Waiting for Target Data")
+                pcount += 1
+            else:
+                pcount += 1 if pcount < 10 else -10
     else:
         x=AR_2.inWaiting()
         if x > 0:
