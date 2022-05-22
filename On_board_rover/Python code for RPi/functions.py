@@ -56,13 +56,12 @@ def getDistfromVec(vector: np.array):
     HDG = atan2(float(vector[1]),float(vector[0]))
     return sqrt(float(sq)) , HDG*180/PI if HDG*180/PI >=0 else HDG*180/PI+360
 
-def giveDriveCMD(dist: float,st_angle: float,drive_mode: int,Driving_Board: serial):
+def giveDriveCMD(dist: float,st_angle: float,drive_mode: int):
     """Function the sends the CMD to the bot to execute the driving"""
     if drive_mode == 0:
         CMDs = ["30","0"]
         print(CMDs)
-        for x in CMDs:
-            writeSerial(Driving_Board,x)
+        return CMDs
     else:
         CMDs = ["",""]
         st_angle = 20 if st_angle > 20 else st_angle
@@ -76,8 +75,7 @@ def giveDriveCMD(dist: float,st_angle: float,drive_mode: int,Driving_Board: seri
             speed = 10
         CMDs[1] = "1"+str(drive_mode)+str(speed)
         print(CMDs)
-        for x in CMDs:
-            writeSerial(Driving_Board,x)
+        return CMDs
 
 def sendIMGdata(IMG: np.array,AR: serial):
     """Function used to send img data over RF"""
