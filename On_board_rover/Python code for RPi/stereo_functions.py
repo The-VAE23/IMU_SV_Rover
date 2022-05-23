@@ -12,11 +12,11 @@
 import cv2 as cv
 import numpy as np
 
-def Imcap(cam_port: int,size: tuple = 0 ):
+def Imcap(cam_port: int,size: tuple = (0,0) ):
     """Function that captures image and realeases the buffer. Necessary on systems like the RPI for multi-camera capture."""
     cap = cv.VideoCapture(cam_port)
 
-    if size != 0:
+    if size[0] != 0 and size[1] !=0:
         cap.set(cv.CAP_PROP_FRAME_WIDTH,size[1])
         cap.set(cv.CAP_PROP_FRAME_HEIGHT,size[0])
 
@@ -136,6 +136,3 @@ def TestSteroOut(imgL: cv,imgR: cv):
         return status, GetSteerDir(disparity,(0,0),(400,110),(0,570),(400,640),threshold), disparity
     else:
         return status, 0, disparity
-
-
-
