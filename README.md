@@ -1,7 +1,11 @@
 This code is part of the UG Project 'Design of Rover' for the partial fullfillment of the requirements for the degree of Bachelors in Technology by
+
 -Vidhi Gohel
+
 -Vistasp Edulji
+
 -Atharva Makarand Pradhan
+
 -Nirav Reshamwala
 
 This GitHub repo contains the code necessary for a semi-autonoumous rover that has on-board sensors and uses stereo vision for obstacle avoidance.
