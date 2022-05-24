@@ -1,5 +1,5 @@
 This code is part of the UG Project 'Design of Rover' for the partial fullfillment of the requirements for the degree of Bachelors in Technology by
--Vidhi Gohel    
+-Vidhi Gohel
 -Vistasp Edulji
 -Atharva Makarand Pradhan
 -Nirav Reshamwala
