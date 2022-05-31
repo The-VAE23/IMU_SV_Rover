@@ -20,7 +20,7 @@ from matplotlib import pyplot as plt
 M_auto = False                                                                          # Boolean that represents operating mode
 rowhead = ["Date and Time","Temperature","Humidity","Latitude","Longiude","Heading"]    # Header for csv file
 rows=np.array(rowhead)                                                                  # Object to store sensor data recived
-img_path = "C:/Users/Vistasp Edulji/Desktop/Ly_project/"                                # Path to where image is saved
+img_path = ""                                                                           # Path to where image is saved
 
 if img_path == "":
     img_path = os.getcwd().replace('\\','/')+'/'                                        # Ensures there is a valid directory to save to if not given one
