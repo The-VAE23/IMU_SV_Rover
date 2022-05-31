@@ -2,7 +2,7 @@ This code is part of the UG Project 'Design of Rover' for the partial fullfillme
 
 -Vidhi Gohel
 
--Vistasp Edulji
+-Vistasp Afrid Edulji
 
 -Atharva Makarand Pradhan
 
